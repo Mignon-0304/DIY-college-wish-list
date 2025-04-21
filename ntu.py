@@ -2,6 +2,8 @@ from bs4 import BeautifulSoup
 from flask import Flask, redirect, request, url_for
 from urllib.error import *
 from urllib.request import urlopen
+import ssl
+ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
 
@@ -228,4 +230,4 @@ AAmounts.clear()
 AAmounts.append(0)
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=5000)
+  app.run(host='0.0.0.0', port=5001, debug=True)
