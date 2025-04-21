@@ -43,7 +43,7 @@ def academy():
   html+='''
   <label for="academy" >想認識的學院:</label>
   <select id="academy" name='academy'>
-  <option value="文學院"> 文學院 </option>
+  <option value="文學院" selected=True> 文學院 </option>
   <option value="社會科學院"> 社會科學院 </option>
   <option value="工學院"> 工學院 </option>
   <option value="管理學院"> 管理學院 </option>
