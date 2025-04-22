@@ -103,13 +103,15 @@ def apartment():
 
 @app.route('/list', methods=['GET'])
 def list():
-  get=request.values.getlist('check')
+  get=request.values.getlist('check')   #get=the apartments that were selected in the last page
   if(m[1]==0):
-    AAmounts.append(len(get))
+    AAmounts.append(len(get))          # "All Amounts" is the list of numbers of how many each 
     m[1]+=1
   for i in get:
     if i not in apartments:
       apartments.append(i)
+    else:
+      AAmounts[len(AAmounts)-1]-=1
 
   b=len(apartments)-len(get)
   aca_now=Academies[(len(Academies)-1)]
@@ -120,13 +122,15 @@ def list():
   f = open(path, 'a')
   s = aca_now + '\n'
   if (m[2]==0):
-    print(aca_now, file=f)
+    print(aca_now, file=f)  #add the academy to the list
     m[2]+=1
   for i in  range(len(get)):
     s = apartments[b+i] + '\n'
     if s not in data:
-      print(apartments[b+i].strip(), file=f)
+      print(apartments[b+i].strip(), file=f)  #If the apartment isn't in the list yet, add the apartment to the list.
   f.close()
+  
+  #I think what can be improved here is the fact that there can be academies appearing repeatedly while the apartments don't repeat.
 
   html='''
   <h1>志願清單（草稿）</h1>'''
@@ -212,9 +216,9 @@ def sure():
       html +='<li>'
       html += data
       html += '<br>'
-  html +="</ol><br><br>"
+  html +="</ol>"
   html += '''
-  <img src="https://i.pinimg.com/564x/f8/81/e5/f881e56ef0c07b51d06dd10b01a77329.jpg" width="40%">
+  <img src="https://i.pinimg.com/564x/f8/81/e5/f881e56ef0c07b51d06dd10b01a77329.jpg" width="20%">
   <p><font color="#FA8072"><i>{}加油！希望我們都能達到我們心中的理想！</i></font></p>
   '''.format(Name[0])
 
