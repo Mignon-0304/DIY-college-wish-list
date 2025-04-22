@@ -107,24 +107,28 @@ def list():
   if(m[1]==0):
     AAmounts.append(len(get))          # "All Amounts" is the list of numbers of departments which were selected under that academy
     m[1]+=1
+
+  b=len(apartments) # b = the number of the total departments selected but without those selected this time
+  c=len(get)
   for i in get:
     if i not in apartments:
       apartments.append(i)
     else:
       AAmounts[len(AAmounts)-1]-=1    #If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
-
-  b=len(apartments)-len(get)    # b = the number of the total departments selected but without those selected this time
+      c-=1
+  
   aca_now=Academies[(len(Academies)-1)] # aca_now stands for "the academy chosen this time"
 
   data = ''
   with open("output.txt",'r') as f:
     data = f.readlines()
+  # write the academy and departments into the file!
   f = open(path, 'a')
   if (m[2]==0):
     print(aca_now, file=f)  #add the academy to the list
     m[2]+=1
-  for i in  range(len(get)):
-    s = apartments[b+i] + '\n'
+  for i in  range(c):
+    s = apartments[b+i] + '\n'      # s = the first apartment selected this time
     if s not in data:
       print(apartments[b+i].strip(), file=f)  #If the apartment isn't in the list yet, add the apartment to the list.
   f.close()
