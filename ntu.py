@@ -7,7 +7,6 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 app = Flask(__name__)
 
-
 ACDM=['文學院','社會科學院','工學院','管理學院','電機資訊學院','生命科學院','創新設計學院','共同教育中心','理學院','醫學院','生物資源兼農學院','公共衛生學院','法律學院','國際學院','重點科技研究學院','進修推廣學院']
 orders=['0','2','4', '6', '8','10','12','14','1','3','5','7', '9', '11','13','15']
 Academies=[]
@@ -184,7 +183,6 @@ def realdelete():
   else:
     return redirect(url_for('list'))
 
-
 @app.route('/sure', methods=['GET'])
 def sure():
   html='''
@@ -215,8 +213,6 @@ def sure():
   '''.format(Name[0])
 
   return html
-
-
 
 with open("output.txt", "r+") as f:
   f.truncate(0)
