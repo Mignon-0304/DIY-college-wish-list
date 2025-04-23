@@ -13,9 +13,10 @@ Academies=[]
 path = 'output.txt'
 apartments=[]
 get=[]
-ANum=[]
+ANum=[0]
 Capital=[]
 Name=[0]
+lines=''''''
 
 @app.route('/')
 def name():
@@ -23,7 +24,6 @@ def name():
   你的名字:<input type='text' name='name' required='required'><br><br>
   '''
   html+='''<input type='submit'></form>'''
-  print(ANum)
   return html
 
 
@@ -63,7 +63,7 @@ def academy():
 def apartment():
   a = request.values.get('academy')
   for i in range(16):
-    if(ACDM[i] == a and ACDM[i] not in Academies):
+    if (ACDM[i] == a):
       Academies.append(ACDM[i])
   for i in range(16):
     if(a == ACDM[i]):
@@ -107,11 +107,11 @@ def list():
     else:
       ND-=1
 
-  ANum.append(ND) # If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
-  print(ANum)
+   # If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
   aca_now = Academies[(len(Academies)-1)] # aca_now = the academy chosen this time
 
   if ND!=0:
+    ANum.append(ND)
   # write the academy and departments into the file!
     f = open(path, 'a')
     print(aca_now, file=f)  #add the academy to the list
@@ -127,8 +127,13 @@ def list():
 
   html +='<ol>'
   p=0
-  n=0
-  for i in range(len(apartments)+len(Academies)):
+  n=1
+
+  f=open(path,'r')
+  lines = f.readlines()
+  f.close()
+
+  for i in range(len(lines)):
     with open("output.txt",'r') as f:
         data = f.readlines()[i]
     if(i == p):
@@ -191,7 +196,7 @@ def sure():
   html +='<ol>'
   p=0
   n=1
-  for i in range(len(apartments)+len(Academies)):
+  for i in range(len(lines)):
     with open("output.txt",'r') as f:
         data = f.readlines()[i]
     if(i == p):
