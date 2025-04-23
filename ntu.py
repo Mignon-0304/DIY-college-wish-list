@@ -14,8 +14,7 @@ Academies=[]
 path = 'output.txt'
 apartments=[]
 get=[]
-AAmounts=[0]
-m=[0, 0, 0, 0]
+ANum=[0]
 Capital=[]
 Name=[0]
 
@@ -30,12 +29,7 @@ def name():
 
 @app.route('/academy')
 def academy():
-  m[0]=0
-  m[1]=0
-  m[2]=0
-  if (m[3]==0):
-    Name[0]= request.values.get('name')
-    m[3]+=1
+  Name[0]= request.values.get('name')
   html='''
   <h1>志願清單<h1>
   <h3><font size="2" face="微軟正黑體">學測快到了，目標要設得高才爬得遠，我們向台大看齊，來打造一份志願清單吧！<h3><br>'''
@@ -69,9 +63,8 @@ def academy():
 def apartment():
   a = request.values.get('academy')
   for i in range(16):
-    if(ACDM[i] == a) and (m[0] == 0):
+    if(ACDM[i] == a):
       Academies.append(ACDM[i])
-      m[0]+=1
   for i in range(16):
     if(a == ACDM[i]):
       order = orders[i]
@@ -103,18 +96,16 @@ def apartment():
 
 @app.route('/list', methods=['GET'])
 def list():
-  get=request.values.getlist('check')   #get=the apartments that were selected in the last page
-  if(m[1]==0):
-    AAmounts.append(len(get))          # "All Amounts" is the list of numbers of departments which were selected under that academy
-    m[1]+=1
-
+  get=request.values.getlist('check')   # get=the apartments that were selected in the last page
+  ANum.append(len(get))          # "Apartment Numbers" is the list of numbers of departments which were selected under that academy
+  
   b=len(apartments) # b = the number of the total departments selected but without those selected this time
-  c=len(get)
+  c=len(get)  
   for i in get:
     if i not in apartments:
       apartments.append(i)
     else:
-      AAmounts[len(AAmounts)-1]-=1    #If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
+      ANum[len(ANum)-1]-=1    #If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
       c-=1
   
   aca_now=Academies[(len(Academies)-1)] # aca_now stands for "the academy chosen this time"
@@ -124,9 +115,7 @@ def list():
     data = f.readlines()
   # write the academy and departments into the file!
   f = open(path, 'a')
-  if (m[2]==0):
-    print(aca_now, file=f)  #add the academy to the list
-    m[2]+=1
+  print(aca_now, file=f)  #add the academy to the list
   for i in  range(c):
     s = apartments[b+i] + '\n'      # s = the first apartment selected this time
     if s not in data:
@@ -149,7 +138,7 @@ def list():
       html += '<h3>'
       html += data
       html += '</h3>'
-      p += AAmounts[n]+1
+      p += ANum[n]+1
       n+=1
       html += '<ol>'
     else:
@@ -189,8 +178,8 @@ def realdelete():
     f.truncate(0)
     Academies.clear()
     apartments.clear()
-    AAmounts.clear()
-    AAmounts.append(0)
+    ANum.clear()
+    ANum.append(0)
     return redirect(url_for('academy'))
   else:
     return redirect(url_for('list'))
@@ -212,7 +201,7 @@ def sure():
       html += '<h3>'
       html += data
       html += '</h3>'
-      p += AAmounts[n]+1
+      p += ANum[n]+1
       n+=1
       html += '<ol>'
     else:
@@ -233,8 +222,8 @@ with open("output.txt", "r+") as f:
   f.truncate(0)
 Academies.clear()
 apartments.clear()
-AAmounts.clear()
-AAmounts.append(0)
+ANum.clear()
+ANum.append(0)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=5001, debug=True)
