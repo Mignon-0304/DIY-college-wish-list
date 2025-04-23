@@ -16,7 +16,6 @@ get=[]
 ANum=[0]
 Capital=[]
 Name=[0]
-lines=''''''
 
 @app.route('/')
 def name():
@@ -195,6 +194,9 @@ def sure():
   html +='<ol>'
   p=0
   n=1
+  f=open(path,'r')
+  lines = f.readlines()
+  f.close()
   for i in range(len(lines)):
     with open("output.txt",'r') as f:
         data = f.readlines()[i]
