@@ -13,9 +13,10 @@ Academies=[]
 path = 'output.txt'
 apartments=[]
 get=[]
-ANum=[0]
+ANum=[]
 Capital=[]
 Name=[0]
+m=[0]
 
 @app.route('/')
 def name():
@@ -28,7 +29,10 @@ def name():
 
 @app.route('/academy')
 def academy():
-  Name[0]= request.values.get('name')
+  if(m[0]==0):
+    Name[0] = request.values.get('name')
+    m[0]+=1
+  print(Name[0])
   html='''
   <h1>志願清單<h1>
   <h3><font size="2" face="微軟正黑體">學測快到了，目標要設得高才爬得遠，我們向台大看齊，來打造一份志願清單吧！<h3><br>'''
@@ -125,7 +129,7 @@ def list():
 
   html +='<ol>'
   p=0
-  n=1
+  n=0
 
   f=open(path,'r')
   lines = f.readlines()
@@ -188,12 +192,13 @@ def realdelete():
 
 @app.route('/sure', methods=['GET'])
 def sure():
+  username = Name[0]
   html='''
-  <h1><u>{}</u>的志願清單</h1>'''.format(Name[0])
+  <h1><u>{}</u>的志願清單</h1>'''.format(username)
 
   html +='<ol>'
   p=0
-  n=1
+  n=0
   f=open(path,'r')
   lines = f.readlines()
   f.close()
@@ -216,7 +221,7 @@ def sure():
   html += '''
   <img src="https://i.pinimg.com/564x/f8/81/e5/f881e56ef0c07b51d06dd10b01a77329.jpg" width="20%">
   <p><font color="#FA8072"><i>{}加油！希望我們都能達到我們心中的理想！</i></font></p>
-  '''.format(Name[0])
+  '''.format(username)
 
   return html
 
@@ -225,7 +230,6 @@ with open("output.txt", "r+") as f:
 Academies.clear()
 apartments.clear()
 ANum.clear()
-ANum.append(0)
 
 if __name__ == '__main__':
   app.run(host='0.0.0.0', port=5001, debug=True)
