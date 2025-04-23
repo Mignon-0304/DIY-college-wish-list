@@ -26,7 +26,6 @@ def name():
   html+='''<input type='submit'></form>'''
   return html
 
-
 @app.route('/academy')
 def academy():
   if(m[0]==0):
@@ -145,6 +144,7 @@ def list():
       html += '</h3>'
       if ANum[n] is not None:
         p += ANum[n]+1
+        print(p)
         n+=1
       html += '<ol>'
     else:
@@ -185,16 +185,14 @@ def realdelete():
     Academies.clear()
     apartments.clear()
     ANum.clear()
-    ANum.append(0)
     return redirect(url_for('academy'))
   else:
     return redirect(url_for('list'))
 
 @app.route('/sure', methods=['GET'])
 def sure():
-  username = Name[0]
   html='''
-  <h1><u>{}</u>的志願清單</h1>'''.format(username)
+  <h1><u>{}</u>的志願清單</h1>'''.format(Name[0])
 
   html +='<ol>'
   p=0
@@ -221,7 +219,7 @@ def sure():
   html += '''
   <img src="https://i.pinimg.com/564x/f8/81/e5/f881e56ef0c07b51d06dd10b01a77329.jpg" width="20%">
   <p><font color="#FA8072"><i>{}加油！希望我們都能達到我們心中的理想！</i></font></p>
-  '''.format(username)
+  '''.format(Name[0])
 
   return html
 
