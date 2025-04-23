@@ -13,7 +13,7 @@ Academies=[]
 path = 'output.txt'
 apartments=[]
 get=[]
-ANum=[0]
+ANum=[]
 Capital=[]
 Name=[0]
 
@@ -23,6 +23,7 @@ def name():
   你的名字:<input type='text' name='name' required='required'><br><br>
   '''
   html+='''<input type='submit'></form>'''
+  print(ANum)
   return html
 
 
@@ -62,7 +63,7 @@ def academy():
 def apartment():
   a = request.values.get('academy')
   for i in range(16):
-    if(ACDM[i] == a):
+    if(ACDM[i] == a and ACDM[i] not in Academies):
       Academies.append(ACDM[i])
   for i in range(16):
     if(a == ACDM[i]):
@@ -73,7 +74,7 @@ def apartment():
   soup = BeautifulSoup(html, "html.parser")
   style = "order:{}".format(order)
   text = soup.find('article', style=style)
-  APMa = text.findAll('a')
+  APMa = text.find_all('a')
   html = '''
   <h2><font color="#4682B4">以下為此學院的各學系，請挑選學系排入志願序：</font></h2>
   <h3>點選連結了解該系詳細資訊！(另開視窗)</h3>
@@ -96,30 +97,28 @@ def apartment():
 @app.route('/list', methods=['GET'])
 def list():
   get=request.values.getlist('check')   # get=the apartments that were selected in the last page
-  ANum.append(len(get))          # "Apartment Numbers" is the list of numbers of departments which were selected under that academy
+            # "Apartment Numbers" is the list of numbers of departments which were selected under that academy
   
-  b=len(apartments) # b = the number of the total departments selected but without those selected this time
-  c=len(get)  
+  OD=len(apartments) # Original Departments = the number of the total departments selected, but without those selected this time
+  ND=len(get)  # New Departments
   for i in get:
     if i not in apartments:
       apartments.append(i)
     else:
-      ANum[len(ANum)-1]-=1    #If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
-      c-=1
-  
-  aca_now=Academies[(len(Academies)-1)] # aca_now stands for "the academy chosen this time"
+      ND-=1
 
-  data = ''
-  with open("output.txt",'r') as f:
-    data = f.readlines()
+  ANum.append(ND) # If an apartment has already appeared last time, the apartment won't be written to the list, therefore the number of departments should be reduced by one, too.
+  print(ANum)
+  aca_now = Academies[(len(Academies)-1)] # aca_now = the academy chosen this time
+
+  if ND!=0:
   # write the academy and departments into the file!
-  f = open(path, 'a')
-  print(aca_now, file=f)  #add the academy to the list
-  for i in  range(c):
-    s = apartments[b+i] + '\n'      # s = the first apartment selected this time
-    if s not in data:
-      print(apartments[b+i].strip(), file=f)  #If the apartment isn't in the list yet, add the apartment to the list.
-  f.close()
+    f = open(path, 'a')
+    print(aca_now, file=f)  #add the academy to the list
+    for i in  range(ND):
+      s = apartments[OD+i] + '\n'      # s = the first apartment selected this time
+      print(apartments[OD+i].strip(), file=f)  # add the apartment to the list.
+    f.close()
   
   #I think what can be improved here is the fact that there can be academies appearing repeatedly while the apartments don't repeat.
 
@@ -128,7 +127,7 @@ def list():
 
   html +='<ol>'
   p=0
-  n=1
+  n=0
   for i in range(len(apartments)+len(Academies)):
     with open("output.txt",'r') as f:
         data = f.readlines()[i]
@@ -137,8 +136,9 @@ def list():
       html += '<h3>'
       html += data
       html += '</h3>'
-      p += ANum[n]+1
-      n+=1
+      if ANum[n] is not None:
+        p += ANum[n]+1
+        n+=1
       html += '<ol>'
     else:
       html +='<li>'
