@@ -97,7 +97,6 @@ def apartment():
 @app.route('/list', methods=['GET'])
 def list():
   get=request.values.getlist('check')   # get=the apartments that were selected in the last page
-            # "Apartment Numbers" is the list of numbers of departments which were selected under that academy
   
   OD=len(apartments) # Original Departments = the number of the total departments selected, but without those selected this time
   ND=len(get)  # New Departments
@@ -111,7 +110,7 @@ def list():
   aca_now = Academies[(len(Academies)-1)] # aca_now = the academy chosen this time
 
   if ND!=0:
-    ANum.append(ND)
+    ANum.append(ND)  # "Apartment Numbers" is the list of numbers of departments which were selected under that academy
   # write the academy and departments into the file!
     f = open(path, 'a')
     print(aca_now, file=f)  #add the academy to the list
