@@ -115,13 +115,12 @@ def list():
     ANum.append(ND)  # "Apartment Numbers" is the list of numbers of departments which were selected under that academy
   # write the academy and departments into the file!
     f = open(path, 'a')
-    print(aca_now, file=f)  #add the academy to the list
-    for i in  range(ND):
-      s = apartments[OD+i] + '\n'      # s = the first apartment selected this time
+    print(aca_now, file=f)  # add the academy to the list
+    for i in range(ND):
       print(apartments[OD+i].strip(), file=f)  # add the apartment to the list.
     f.close()
   
-  #I think what can be improved here is the fact that there can be academies appearing repeatedly while the apartments don't repeat.
+  # I think what can be improved here is the fact that there can be academies appearing repeatedly while the apartments don't repeat.
 
   html='''
   <h1>志願清單（草稿）</h1>'''
